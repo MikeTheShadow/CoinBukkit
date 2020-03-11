@@ -1,0 +1,13 @@
+name: CoinBukkit
+version: ${project.version}
+main: com.miketheshadow.coinbukkit.CoinBukkit
+api-version: 1.13
+authors: [MikeTheShadow]
+description: Coin purse plugin for minecarft
+depend: [ComplexProficiencies]
+commands:
+  purse:
+    description: Displays your current balance
+    usage: /<purse>
+    permission: CoinBukkit.basic
+    permission-message: You don't have CoinBukkit.basic permission
