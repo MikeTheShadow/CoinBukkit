@@ -37,7 +37,7 @@ public class CoinPurse {
         }
         else{
             if(labor - (laborReq * amount) < 0){
-                player.sendMessage(ChatColor.RED + "You don't have enough labor to open this many purses!\n" + labor + "\\" + laborReq);
+                player.sendMessage(ChatColor.RED + "You don't have enough labor to open this many purses!\n" + labor + "\\" + (laborReq * amount));
                 return;
             }
             int total = 0;

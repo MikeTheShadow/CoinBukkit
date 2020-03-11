@@ -2,6 +2,7 @@ package com.miketheshadow.coinbukkit;
 
 import com.miketheshadow.coinbukkit.listeners.CommandListener;
 import com.miketheshadow.coinbukkit.listeners.MobDeathListener;
+import com.miketheshadow.coinbukkit.listeners.PlayerJoinEvent;
 import com.miketheshadow.complexproficiencies.listener.CustomCommandListener;
 import com.miketheshadow.complexproficiencies.listener.InventoryListener;
 import org.bukkit.Bukkit;
@@ -30,7 +31,7 @@ public class CoinBukkit extends JavaPlugin {
 
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new MobDeathListener(), this);
-
+        pluginManager.registerEvents(new PlayerJoinEvent(),this);
         this.getCommand("purse").setExecutor(new CommandListener(this));
         this.getCommand("purselist").setExecutor(new CommandListener(this));
         this.getCommand("openpurse").setExecutor(new CommandListener(this));
