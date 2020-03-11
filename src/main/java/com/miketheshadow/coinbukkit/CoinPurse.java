@@ -2,6 +2,7 @@ package com.miketheshadow.coinbukkit;
 
 import com.miketheshadow.complexproficiencies.api.UserAPI;
 import com.miketheshadow.complexproficiencies.utils.CustomUser;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CoinPurse {
@@ -9,7 +10,6 @@ public class CoinPurse {
     int minValue;
     int maxValue;
     int laborReq;
-    int amount;
 
     public CoinPurse(String rarity, int minValue, int maxValue, int laborReq) {
         this.rarity = rarity;
@@ -18,24 +18,34 @@ public class CoinPurse {
         this.laborReq = laborReq;
     }
 
-    public int open(Player player) {
-        if(laborCheck(player))return 0;
-        return  (int)(Math.random()*((this.maxValue-this.minValue)+1))+this.minValue;
-    }
-
-    public int openAll(Player player) {
-        if(laborCheck(player))return 0;
-        int total = 0;
-        while (amount != 0){
-            amount--;
-            total += (int)(Math.random()*((this.maxValue-this.minValue)+1))+this.minValue;
-        }
-        return total;
-    }
-
-    public boolean laborCheck(Player player){
+    public void open(Player player,int amount) {
         CustomUser user = UserAPI.getUser(player);
         int labor = user.getLabor();
-        return labor - laborReq <= 0;
+        if(amount == 1){
+            if(labor - laborReq >= 0){
+                player.sendMessage(ChatColor.RED + "You don't have enough labor to open this purse!");
+                return;
+            }
+            user.setLabor(labor - laborReq);
+            int total = roll();
+            user.setBalance(user.getBalance() + total);
+            player.sendMessage("You gained: " + total + " Cor");
+        }
+        else{
+            if(labor - (laborReq * amount) >= 0){
+                player.sendMessage(ChatColor.RED + "You don't have enough labor to open this many purses!");
+                return;
+            }
+            int total = 0;
+            for(int i = 0; i < amount;i++){
+                total += roll();
+            }
+            user.setLabor(labor - laborReq);
+            user.setBalance(user.getBalance() + total);
+            player.sendMessage("You gained: " + total + " Cor");
+        }
+    }
+    public int roll(){
+        return (int)(Math.random()*((this.maxValue-this.minValue)+1))+this.minValue;
     }
 }
