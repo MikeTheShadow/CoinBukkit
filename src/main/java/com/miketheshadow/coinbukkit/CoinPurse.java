@@ -36,7 +36,7 @@ public class CoinPurse {
             player.sendMessage("You opened a(n) " + rarity + " coin purse gained: " + total + " Cor");
         }
         else{
-            if(labor - (laborReq * amount) < 0){
+            if(labor - (laborReq * amount) < 0) {
                 player.sendMessage(ChatColor.RED + "You don't have enough labor to open this many purses!\n" + labor + "\\" + (laborReq * amount));
                 return;
             }
