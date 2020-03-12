@@ -51,22 +51,28 @@ public class CommandListener implements CommandExecutor
             CustomUser customUser = UserAPI.getUser(player);
             HashMap<String,Integer> purseMap = customUser.getPurses();
             StringBuilder builder = new StringBuilder();
+            builder.append(ChatColor.DARK_GRAY).append("--------------------------\n");
             for (Map.Entry<String,Integer> purse: purseMap.entrySet()) {
                 if(purse.getValue() > 0){
                     builder.append(ChatColor.RESET)
                             .append(purse.getKey())
                             .append(" : ")
                             .append(ChatColor.DARK_PURPLE)
-                            .append(purse.getValue());
+                            .append(purse.getValue())
+                            .append("\n");
                 }
             }
+            builder.append(ChatColor.DARK_GRAY).append("--------------------------");
             if(!builder.toString().equals("")) { player.sendMessage(ChatColor.GOLD + "You currently have: \n" + builder.toString()); }
             else player.sendMessage(ChatColor.RED + "You currently have no purses!");;
             return true;
         }
         else if (cmd.getName().equalsIgnoreCase("addpurse")) {
             if(args.length >= 2){
-                if(CoinBukkit.typeYML.getString(args[1] + ".RARITY") == null) return false;
+                if(CoinBukkit.typeYML.getString(args[1] + ".COST") == null){
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "PURSE TYPE DOESNT EXIST: " + args[1]);
+                    return false;
+                }
                 Player player = Bukkit.getPlayer(args[0]);
                 if(player == null)return false;
                 CustomUser user = UserAPI.getUser(player);

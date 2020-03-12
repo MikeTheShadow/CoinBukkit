@@ -16,7 +16,7 @@ public class MobDeathListener implements Listener
         if(event.getEntity() instanceof Player)return;
         Player player = event.getEntity().getKiller();
         if(player == null)return;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"addpurse " + player.getName() + "§4Queens " + "60");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"addpurse " + player.getName() + " §4Queens " + "60");
         World world = event.getEntity().getWorld();
         Location location = event.getEntity().getLocation();
         world.spawnEntity(location, EntityType.COW);
