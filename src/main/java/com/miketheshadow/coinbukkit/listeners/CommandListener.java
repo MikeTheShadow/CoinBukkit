@@ -34,8 +34,7 @@ public class CommandListener implements CommandExecutor
             }
             if(args.length == 2){
                 String rarity = args[0];
-                for(int i = 0;i < args.length;i++)Bukkit.getConsoleSender().sendMessage(args[i]);
-                int amount = Integer.getInteger(args[1]);
+                int amount = Integer.parseInt(args[1]);
                 CoinPurse.openPurses(rarity,(Player)sender,amount);
                 return true;
             }

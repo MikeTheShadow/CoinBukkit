@@ -54,7 +54,6 @@ public class CoinBukkit extends JavaPlugin {
             }
             typeYML = YamlConfiguration.loadConfiguration(typeFile);
             typeYML.set("TEST","");
-            typeYML.set("TEST.RARITY","§6LEGENDARY");
             typeYML.set("TEST.MIN",10);
             typeYML.set("TEST.MAX",12);
             typeYML.set("TEST.COST",50);

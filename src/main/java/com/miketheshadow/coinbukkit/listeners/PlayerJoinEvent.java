@@ -11,7 +11,7 @@ public class PlayerJoinEvent implements Listener
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event){
         event.getPlayer().sendMessage("Welcome! Kill cows get purses! Open purses using openpurse [pursename] [amount (optional)]");
         CustomUser user =  UserAPI.getUser(event.getPlayer());
-        user.setLabor(1000);
+        user.setLabor(100);
         UserAPI.updateUser(user);
     }
 }
