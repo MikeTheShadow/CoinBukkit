@@ -1,12 +1,11 @@
 package com.miketheshadow.coinbukkit.listeners;
 
 import com.miketheshadow.coinbukkit.CoinBukkit;
-import com.miketheshadow.coinbukkit.CoinPurse;
+import com.miketheshadow.coinbukkit.OpenPurse;
 import com.miketheshadow.coinbukkit.util.Purse;
 import com.miketheshadow.coinbukkit.util.PurseDBHandler;
 import com.miketheshadow.complexproficiencies.api.UserAPI;
 import com.miketheshadow.complexproficiencies.utils.CustomUser;
-import com.miketheshadow.complexproficiencies.utils.DBHandlers.UserDBHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,12 +35,12 @@ public class CommandListener implements CommandExecutor
                 return true;
             }
             if(args.length == 1){
-                CoinPurse.openPurses(purse,(Player)sender,1);
+                OpenPurse.openPurses(purse,(Player)sender,1);
                 return true;
             }
             if(args.length == 2){
                 int amount = Integer.parseInt(args[1]);
-                CoinPurse.openPurses(purse,(Player)sender,amount);
+                OpenPurse.openPurses(purse,(Player)sender,amount);
                 return true;
             }
             return false;

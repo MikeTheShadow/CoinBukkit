@@ -3,10 +3,11 @@ package com.miketheshadow.coinbukkit;
 import com.miketheshadow.coinbukkit.util.Purse;
 import com.miketheshadow.complexproficiencies.api.UserAPI;
 import com.miketheshadow.complexproficiencies.utils.CustomUser;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class CoinPurse {
+public class OpenPurse {
 
     public static void openPurses(Purse purse, Player player, int amount) {
 
@@ -40,6 +41,7 @@ public class CoinPurse {
             user.getPurses().put(purseName,user.getPurses().get(purseName) - 1);
             //player.sendMessage("You opened a(n) " + coloredText + ChatColor.RESET + " coin purse and gained: " + total + " Cor");
             player.sendMessage("You opened a" + coloredText + " purse!");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"eco give " + user.getName() + " " + total);
 
         }
         else{
@@ -60,6 +62,7 @@ public class CoinPurse {
             user.getPurses().put(purseName,user.getPurses().get(purseName) - count);
             //layer.sendMessage("You opened " + amount + " " + coloredText + ChatColor.RESET + " purses and gained: " + total + " Cor");
             player.sendMessage("You opened " + amount + " " + coloredText + " purses!");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"eco give " + user.getName() + " " + total);
         }
         UserAPI.updateUser(user);
     }
