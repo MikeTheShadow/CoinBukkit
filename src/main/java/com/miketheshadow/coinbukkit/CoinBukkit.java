@@ -12,15 +12,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CoinBukkit extends JavaPlugin {
     //Create a singleton here.
     public static CoinBukkit INSTANCE;
-
+    public static final boolean TESTMODE = false;
     public CoinBukkit getInstance() {
         if(INSTANCE == null) { INSTANCE = this; }
         return INSTANCE;
     }
 
     public void onEnable() {
-        Purse purse = new Purse("test",5,"&a",50,5,10,5);
-        PurseDBHandler.addPurse(purse);
+        if(TESTMODE) {
+            Purse purse = new Purse("test",5,"&a",50,5,10,5);
+            PurseDBHandler.addPurse(purse);
+        }
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerDropItemListener(),this);
         this.getCommand("purse").setExecutor(new CommandListener(this));

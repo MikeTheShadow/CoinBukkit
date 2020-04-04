@@ -1,5 +1,6 @@
 package com.miketheshadow.coinbukkit.listeners;
 
+import com.miketheshadow.coinbukkit.CoinBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,12 +14,14 @@ public class MobDeathListener implements Listener
 {
     @EventHandler
     public static void onMobDeath(EntityDeathEvent event){
-        if(event.getEntity() instanceof Player)return;
-        Player player = event.getEntity().getKiller();
-        if(player == null)return;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"addpurse " + player.getName() + " Queens " + "60");
-        World world = event.getEntity().getWorld();
-        Location location = event.getEntity().getLocation();
-        world.spawnEntity(location, EntityType.COW);
+        if(CoinBukkit.TESTMODE) {
+            if(event.getEntity() instanceof Player)return;
+            Player player = event.getEntity().getKiller();
+            if(player == null)return;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"addpurse " + player.getName() + " Queens " + "60");
+            World world = event.getEntity().getWorld();
+            Location location = event.getEntity().getLocation();
+            world.spawnEntity(location, EntityType.COW);
+        }
     }
 }
