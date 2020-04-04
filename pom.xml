@@ -4,10 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.MikeTheShadow</groupId>
+    <groupId>com.miketheshadow</groupId>
     <artifactId>CoinBukkit</artifactId>
     <version>1.0-BETA</version>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -51,7 +63,7 @@
         <dependency>
             <groupId>com.github.MikeTheShadow</groupId>
             <artifactId>ComplexProficiencies</artifactId>
-            <version>V1.2.0</version>
+            <version>V2.1.0</version>
         </dependency>
     </dependencies>
 

@@ -2,10 +2,11 @@ package com.miketheshadow.coinbukkit.listeners;
 
 import com.miketheshadow.coinbukkit.CoinBukkit;
 import com.miketheshadow.coinbukkit.CoinPurse;
-import com.miketheshadow.complexproficiencies.ComplexProficiencies;
+import com.miketheshadow.coinbukkit.util.Purse;
+import com.miketheshadow.coinbukkit.util.PurseDBHandler;
 import com.miketheshadow.complexproficiencies.api.UserAPI;
 import com.miketheshadow.complexproficiencies.utils.CustomUser;
-import com.miketheshadow.complexproficiencies.utils.UserDBHandler;
+import com.miketheshadow.complexproficiencies.utils.DBHandlers.UserDBHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class CommandListener implements CommandExecutor
 {
@@ -27,15 +29,19 @@ public class CommandListener implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("openpurse")) {
             if (!(sender instanceof Player)) return false;
+            Purse purse = (PurseDBHandler.getPurse(args[0]));
+            if(purse == null) {
+                Player player = (Player)sender;
+                player.sendMessage(ChatColor.RED + "Purse " + args[0] + " does not exist!");
+                return true;
+            }
             if(args.length == 1){
-                String rarity = args[0];
-                CoinPurse.openPurses(rarity,(Player)sender,1);
+                CoinPurse.openPurses(purse,(Player)sender,1);
                 return true;
             }
             if(args.length == 2){
-                String rarity = args[0];
                 int amount = Integer.parseInt(args[1]);
-                CoinPurse.openPurses(rarity,(Player)sender,amount);
+                CoinPurse.openPurses(purse,(Player)sender,amount);
                 return true;
             }
             return false;
@@ -44,6 +50,7 @@ public class CommandListener implements CommandExecutor
             if (!(sender instanceof Player)) return false;
             Player player = (Player) sender;
             player.sendMessage(ChatColor.GOLD + "You currently have: " + ChatColor.GREEN + UserDBHandler.getPlayer(player).getBalance() + ChatColor.GRAY + " Cor");
+            return true;
         }
         else if (cmd.getName().equalsIgnoreCase("purselist")) {
             if (!(sender instanceof Player)) return false;
@@ -55,7 +62,9 @@ public class CommandListener implements CommandExecutor
             for (Map.Entry<String,Integer> purse: purseMap.entrySet()) {
                 if(purse.getValue() > 0){
                     builder.append(ChatColor.RESET)
+                            .append(CoinBukkit.getColor(PurseDBHandler.getPurse(purse.getKey()).getColor()))
                             .append(purse.getKey())
+                            .append(ChatColor.RESET)
                             .append(" : ")
                             .append(ChatColor.DARK_PURPLE)
                             .append(purse.getValue())
@@ -68,33 +77,52 @@ public class CommandListener implements CommandExecutor
             return true;
         }
         else if (cmd.getName().equalsIgnoreCase("addpurse")) {
-            if(args.length >= 2){
-                if(CoinBukkit.typeYML.getString(args[1] + ".COST") == null){
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "PURSE TYPE DOESNT EXIST: " + args[1]);
-                    return false;
-                }
-                Player player = Bukkit.getPlayer(args[0]);
-                if(player == null)return false;
-                CustomUser user = UserAPI.getUser(player);
+            if(args.length == 3 && args[0].equalsIgnoreCase("level")) {
+                int level = Integer.parseInt(args[1]);
+                Player player = Bukkit.getPlayer(args[2]);
                 try {
-                    int amount = user.getPurses().get(args[1]);
-                    user.getPurses().put(args[1],amount + 1);
+                    PurseDBHandler.getPurseByMinCost(level).getName();
+                } catch (Exception ignored) {
+                    player.sendMessage(ChatColor.RED + "PURSE ERROR! Please report as such!");
+                    return true;
                 }
-                catch (Exception e) {
-                    user.getPurses().put(args[1],1);
-                }
-                UserAPI.updateUser(user);
-                if(args.length == 3){
-                    double chance = Math.random();
-                    double probability = Double.parseDouble(args[2]) / 100;
-                    if(chance >= probability){
-                        player.sendMessage(ChatColor.GOLD + "You got a " + ChatColor.RESET + args[1] + ChatColor.GOLD + " purse!");
+                Purse purse = PurseDBHandler.getPurseByMinCost(level);
+                Random random = new Random();
+                if(random.nextFloat() > purse.getChance()) {
+                    player.sendMessage(ChatColor.GOLD + "You got a " + CoinBukkit.getColor(purse.getColor()) + purse.getName() + ChatColor.GOLD + " purse!");
+                    CustomUser user = UserAPI.getUser(player);
+                    try {
+                        int amount = user.getPurses().get(purse.getName());
+                        user.getPurses().put(purse.getName(),amount + 1);
                     }
+                    catch (Exception e) {
+                        user.getPurses().put(purse.getName(),1);
+                    }
+                    UserAPI.updateUser(user);
+                    return true;
                 }
-                else player.sendMessage(ChatColor.GOLD + "You got a " + ChatColor.RESET + args[1] + ChatColor.GOLD + " purse!");
-                return true;
+                else {
+                    return true;
+                }
+
             }
 
+            return false;
+        } else if (cmd.getName().equalsIgnoreCase("createpurse")) {
+            if(args.length != 7) return false;
+            try {
+                String name = args[0];
+                int maxLevel = Integer.parseInt(args[1]);
+                String colorCode = args[2];
+                double chance = Double.parseDouble(args[3]);
+                int minMoney = Integer.parseInt(args[4]);
+                int maxMoney = Integer.parseInt(args[5]);
+                int cost = Integer.parseInt(args[6]);
+                PurseDBHandler.addPurse(new Purse(name,maxLevel,colorCode,chance,minMoney,maxMoney,cost));
+            } catch (Exception ignored) {
+                sender.sendMessage(ChatColor.RED + "Invalid arguments!");
+                return false;
+            }
             return true;
         }
         return false;
