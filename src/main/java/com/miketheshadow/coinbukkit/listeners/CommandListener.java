@@ -49,7 +49,7 @@ public class CommandListener implements CommandExecutor
         else if (cmd.getName().equalsIgnoreCase("purse")) {
             if (!(sender instanceof Player)) return false;
             Player player = (Player) sender;
-            player.sendMessage(ChatColor.GOLD + "You currently have: " + ChatColor.GREEN + UserDBHandler.getPlayer(player).getBalance() + ChatColor.GRAY + " Cor");
+            //player.sendMessage(ChatColor.GOLD + "You currently have: " + ChatColor.GREEN + UserDBHandler.getPlayer(player).getBalance() + ChatColor.GRAY + " Cor");
             return true;
         }
         else if (cmd.getName().equalsIgnoreCase("purselist")) {
@@ -119,11 +119,19 @@ public class CommandListener implements CommandExecutor
                 int maxMoney = Integer.parseInt(args[5]);
                 int cost = Integer.parseInt(args[6]);
                 PurseDBHandler.addPurse(new Purse(name,maxLevel,colorCode,chance,minMoney,maxMoney,cost));
+                sender.sendMessage(ChatColor.GREEN + "Added new purse " + name +"!");
             } catch (Exception ignored) {
                 sender.sendMessage(ChatColor.RED + "Invalid arguments!");
                 return false;
             }
             return true;
+        } else if(cmd.getName().equalsIgnoreCase("removepurse")) {
+            if(args.length != 1) return false;
+            if(PurseDBHandler.removePurse(args[0])) {
+                sender.sendMessage(ChatColor.RED + "Removed!");
+            } else {
+                sender.sendMessage(ChatColor.RED + "Purse doesn't exist with name: " + args[0]);
+            }
         }
         return false;
     }

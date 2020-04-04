@@ -38,7 +38,9 @@ public class CoinPurse {
             int total = (int)(Math.random()*((max-min)+1))+min;
             user.setBalance(user.getBalance() + total);
             user.getPurses().put(purseName,user.getPurses().get(purseName) - 1);
-            player.sendMessage("You opened a(n) " + coloredText + ChatColor.RESET + " coin purse and gained: " + total + " Cor");
+            //player.sendMessage("You opened a(n) " + coloredText + ChatColor.RESET + " coin purse and gained: " + total + " Cor");
+            player.sendMessage("You opened a" + coloredText + " purse!");
+
         }
         else{
             if(labor - (laborReq * amount) < 0) {
@@ -56,7 +58,8 @@ public class CoinPurse {
             user.setLabor(labor - laborReq);
             user.setBalance(user.getBalance() + total);
             user.getPurses().put(purseName,user.getPurses().get(purseName) - count);
-            player.sendMessage("You opened " + amount + " " + coloredText + ChatColor.RESET + " purses and gained: " + total + " Cor");
+            //layer.sendMessage("You opened " + amount + " " + coloredText + ChatColor.RESET + " purses and gained: " + total + " Cor");
+            player.sendMessage("You opened " + amount + " " + coloredText + " purses!");
         }
         UserAPI.updateUser(user);
     }

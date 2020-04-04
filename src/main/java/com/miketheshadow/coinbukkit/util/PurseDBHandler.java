@@ -39,8 +39,8 @@ public class PurseDBHandler
         collection.replaceOne(new BasicDBObject("path", category.getPath()), category.toDocument());
     }
 
-    public static boolean removePurse(Category category){
-        FindIterable<Document> cursor = collection.find(new BasicDBObject("path", category.getPath()));
+    public static boolean removePurse(String purse){
+        FindIterable<Document> cursor = collection.find(new BasicDBObject("name", purse));
         Document remove = cursor.first();
         if(remove == null) return false;
         collection.deleteOne(remove);
@@ -64,8 +64,7 @@ public class PurseDBHandler
     }
 
     public static MongoCollection<Document> init() {
-        if(collection == null)
-        {
+        if(collection == null) {
             MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
             MongoDatabase database = mongoClient.getDatabase("ComplexProficiencies");
             return database.getCollection("Purses");
