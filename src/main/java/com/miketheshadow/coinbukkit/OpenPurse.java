@@ -68,6 +68,5 @@ public class OpenPurse {
             user.addExperience("larceny",laborReq * amount,player);
 
         }
-        UserAPI.updateUser(user);
     }
 }
