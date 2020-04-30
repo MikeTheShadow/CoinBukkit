@@ -28,6 +28,7 @@ public class CommandListener implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("openpurse")) {
             if (!(sender instanceof Player)) return false;
+            if(args.length < 1) return false;
             Purse purse = (PurseDBHandler.getPurse(args[0]));
             if(purse == null) {
                 Player player = (Player)sender;
@@ -79,17 +80,21 @@ public class CommandListener implements CommandExecutor
             if(args.length == 3 && args[0].equalsIgnoreCase("level")) {
                 int level = Integer.parseInt(args[1]);
                 Player player = Bukkit.getPlayer(args[2]);
+                CustomUser user = UserAPI.getUser(player);
+                if(user.getLevelXP()[0] - level > 10 && user.getLevelXP()[0] - level < -10) {
+
+                }
                 try {
                     PurseDBHandler.getPurseByMinCost(level).getName();
                 } catch (Exception ignored) {
-                    player.sendMessage(ChatColor.RED + "PURSE ERROR! Please report as such!");
+                    player.sendMessage(ChatColor.RED + "PURSE ERROR! Please report as such!" + ignored.getMessage());
                     return true;
                 }
                 Purse purse = PurseDBHandler.getPurseByMinCost(level);
                 Random random = new Random();
                 if(random.nextFloat() > purse.getChance()) {
                     player.sendMessage(ChatColor.GOLD + "You got a " + CoinBukkit.getColor(purse.getColor()) + purse.getName() + ChatColor.GOLD + " purse!");
-                    CustomUser user = UserAPI.getUser(player);
+
                     try {
                         int amount = user.getPurses().get(purse.getName());
                         user.getPurses().put(purse.getName(),amount + 1);

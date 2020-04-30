@@ -30,4 +30,4 @@ commands:
     description: Create a new purse
     usage: /<createpurse> [name] [maxLevel] [colorCode] [%chance] [minMoney] [maxMoney] [laborCost]
     permission: CoinBukkit.admin
-    permission-message: You don't have CoinBukkit.basic permission
+    permission-message: You don't have CoinBukkit.admin permission
