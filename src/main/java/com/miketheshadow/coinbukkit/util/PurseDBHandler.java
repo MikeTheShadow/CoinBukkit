@@ -56,13 +56,15 @@ public class PurseDBHandler
         return purseList;
     }
 
+    public static int difference = 5;
+
     public static Purse getPurseByMinCost(int level) {
-        if((level % 10)> 0){
-            level = level + ( 10 - (level % 10));
+        if((level % difference)> 0){
+            level = level + ( difference - (level % difference));
         }
         FindIterable<Document> cursor = collection.find( new Document()
                 .append("minLevel", new Document()
-                                .append("$gt" , level - 10).append("$lte",level)));
+                                .append("$gt" , level - difference).append("$lte",level)));
         return new Purse(cursor.first());
     }
 

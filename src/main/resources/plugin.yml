@@ -23,11 +23,16 @@ commands:
     permission-message: You don't have CoinBukkit.basic permission
   addpurse:
     description: Adds a purse to a player
-    usage: /<addpurse> [name] [rarity]
+    usage: /<addpurse> [level] [levelNum] [player]
     permission: CoinBukkit.admin
     permission-message: You don't have CoinBukkit.basic permission
   createpurse:
     description: Create a new purse
     usage: /<createpurse> [name] [maxLevel] [colorCode] [%chance] [minMoney] [maxMoney] [laborCost]
+    permission: CoinBukkit.admin
+    permission-message: You don't have CoinBukkit.admin permission
+  removepurse:
+    description: Removes a purse
+    usage: /<removepurse> [name]
     permission: CoinBukkit.admin
     permission-message: You don't have CoinBukkit.admin permission

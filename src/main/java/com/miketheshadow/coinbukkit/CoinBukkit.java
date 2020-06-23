@@ -30,6 +30,7 @@ public class CoinBukkit extends JavaPlugin {
         this.getCommand("openpurse").setExecutor(new CommandListener(this));
         this.getCommand("addpurse").setExecutor(new CommandListener(this));
         this.getCommand("createpurse").setExecutor(new CommandListener(this));
+        this.getCommand("removepurse").setExecutor(new CommandListener(this));
     }
 
     public void onDisable(){

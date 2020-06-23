@@ -136,6 +136,7 @@ public class CommandListener implements CommandExecutor
             } else {
                 sender.sendMessage(ChatColor.RED + "Purse doesn't exist with name: " + args[0]);
             }
+            return true;
         }
         return false;
     }
