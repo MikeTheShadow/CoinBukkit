@@ -6,13 +6,8 @@ authors: [MikeTheShadow]
 description: Coin purse plugin for minecarft
 depend: [ComplexProficiencies]
 commands:
-  openpurse:
-    description: Opens a purse
-    usage: /<openpurse> [rarity] [amount (optional)]
-    permission: CoinBukkit.basic
-    permission-message: You don't have CoinBukkit.basic permission
   purse:
-    description: Check your balance
+    description: Open the purse menu
     usage: /<purse>
     permission: CoinBukkit.basic
     permission-message: You don't have CoinBukkit.basic permission

@@ -8,14 +8,17 @@ import com.miketheshadow.complexproficiencies.api.UserAPI;
 import com.miketheshadow.complexproficiencies.utils.CustomUser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class CommandListener implements CommandExecutor
 {
@@ -48,8 +51,25 @@ public class CommandListener implements CommandExecutor
         }
         else if (cmd.getName().equalsIgnoreCase("purse")) {
             if (!(sender instanceof Player)) return false;
-            Player player = (Player) sender;
-            //player.sendMessage(ChatColor.GOLD + "You currently have: " + ChatColor.GREEN + UserDBHandler.getPlayer(player).getBalance() + ChatColor.GRAY + " Cor");
+            Player player = (Player)sender;
+            CustomUser customUser = UserAPI.getUser(player);
+            HashMap<String,Integer> purseMap = customUser.getPurses();
+            List<String> purseList = new ArrayList<>();
+            for (Map.Entry<String,Integer> purse: purseMap.entrySet()) {
+                if(purse.getValue() > 0){
+                    purseList.add(purse.getKey());
+                }
+            }
+            if(purseList.size() == 0) {
+                player.sendMessage(ChatColor.RED + "You don't have any purses!");
+                return true;
+            }
+            Inventory inventory = Bukkit.createInventory(player,54,"Purse Menu");
+            for (String purse : purseList) {
+                int cost = PurseDBHandler.getPurse(purse).getLaborCost();
+                inventory.addItem(register(Material.BLUE_SHULKER_BOX,purse,purseMap.get(purse),cost));
+            }
+            player.openInventory(inventory);
             return true;
         }
         else if (cmd.getName().equalsIgnoreCase("purselist")) {
@@ -139,5 +159,23 @@ public class CommandListener implements CommandExecutor
             return true;
         }
         return false;
+    }
+    public static ItemStack register(Material material, String name,int amount,int laborCost) {
+        List<String> list = new ArrayList<>();
+        list.add("Total: " + amount);
+        list.add("Cost: " + laborCost + " labor");
+        list.add(ChatColor.GRAY + "Left click to open 1");
+        list.add(ChatColor.GRAY + "Right click to open 5");
+        list.add(ChatColor.GRAY + "Shift left click to open all");
+
+        //create the item
+        ItemStack item = new ItemStack(material);
+        //add tags
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        meta.setLore(list);
+        item.setItemMeta(meta);
+
+        return item;
     }
 }
